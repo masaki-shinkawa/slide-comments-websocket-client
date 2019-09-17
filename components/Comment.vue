@@ -40,6 +40,7 @@ export default {
   font-size: 40px;
   opacity: 0;
   word-break: keep-all;
+  pointer-events: none;
 }
 
 @keyframes comment-scroll {
