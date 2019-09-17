@@ -5,6 +5,10 @@ module.exports = {
   /*
    ** Headers of the page
    */
+  server: {
+    port: process.env.PORT || 3000, // デフォルト: 3000
+    host: '0.0.0.0' // デフォルト: localhost
+  },
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
     title: process.env.npm_package_name || '',
