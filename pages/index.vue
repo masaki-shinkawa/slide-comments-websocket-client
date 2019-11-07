@@ -1,57 +1,84 @@
 <template>
-  <v-layout column justify-center align-center>
-    <v-flex xs12 class="iframe-wrapper">
-      <template v-for="(comment, i) in comments">
-        <comment :key="i" :comment="comment" :my-id="id"></comment>
-      </template>
-      <iframe
-        class="iframe"
-        :src="url"
-        frameborder="0"
-        width="960"
-        height="569"
-        allowfullscreen="true"
-        mozallowfullscreen="true"
-        webkitallowfullscreen="true"
-      />
-    </v-flex>
-    <v-bottom-navigation v-model="bottomNav" dark height="32" class="bottomNav">
-      <v-btn @click="click">
-        <span>💩</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>✨</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>💖</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>🤪</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>ｲｲﾈ!!</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>社外から</span>
-      </v-btn>
-      <v-btn @click="click">
-        <span>家から</span>
-      </v-btn>
-    </v-bottom-navigation>
-    <v-bottom-navigation v-model="bottomNav" dark height="70" class="bottomNav">
-      <v-col cols="11">
-        <v-text-field
-          v-model="freeComment"
-          label="LTで質問があれば入力してね！"
-        />
-      </v-col>
-      <v-col cols="1" class="d-flex justify-center">
-        <v-btn @click="sendFreeMessage">
-          <v-icon>mdi-send</v-icon>
-        </v-btn>
-      </v-col>
-    </v-bottom-navigation>
-  </v-layout>
+  <v-app dark>
+    <v-content>
+      <v-container fill-height>
+        <v-layout wrap>
+          <v-flex xs12 class="iframe-wrapper">
+            <v-col cols="12">
+              <template v-for="(comment, i) in comments">
+                <comment :key="i" :comment="comment" :my-id="id"></comment>
+              </template>
+              <iframe
+                class="iframe"
+                :src="url"
+                frameborder="0"
+                width="960"
+                height="569"
+                allowfullscreen="true"
+                mozallowfullscreen="true"
+                webkitallowfullscreen="true"
+              />
+              <article v-show="isShowComment" class="comment-area">
+                <ul>
+                  <template v-for="(comment, i) in lastComment">
+                    <li :key="i">{{ comment.comment }}</li>
+                  </template>
+                </ul>
+              </article>
+            </v-col>
+          </v-flex>
+          <v-flex>
+            <v-bottom-navigation
+              v-model="bottomNav"
+              dark
+              height="32"
+              class="bottomNav"
+            >
+              <v-btn @click="click">
+                <span>💩</span>
+              </v-btn>
+              <v-btn @click="click">
+                <span>✨</span>
+              </v-btn>
+              <v-btn @click="click">
+                <span>💖</span>
+              </v-btn>
+              <v-btn @click="click">
+                <span>🤪</span>
+              </v-btn>
+              <v-btn @click="click">
+                <span>🌝</span>
+              </v-btn>
+              <v-btn @click="click">
+                <span>🤔</span>
+              </v-btn>
+              <v-btn @click="switchShowComment">
+                <v-icon>mdi-comment</v-icon>
+              </v-btn>
+            </v-bottom-navigation>
+          </v-flex>
+          <v-flex>
+            <v-bottom-navigation
+              v-model="bottomNav"
+              dark
+              height="90"
+              class="bottomNav"
+            >
+              <v-col cols="10">
+                <v-text-field
+                  v-model="freeComment"
+                  label="LTで質問があれば入力してね！"
+                />
+              </v-col>
+              <v-btn text icon x-small min-width="40" @click="sendFreeMessage">
+                <v-icon>mdi-send</v-icon>
+              </v-btn>
+            </v-bottom-navigation>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -69,12 +96,16 @@ export default {
       bottomNav: 0,
       socket: '',
       freeComment: '',
-      url: ''
+      url: '',
+      isShowComment: false
     }
   },
   computed: {
     bottomNavComp() {
       return this.bottomNav
+    },
+    lastComment() {
+      return this.comments.slice(-5)
     }
   },
   mounted() {
@@ -98,6 +129,9 @@ export default {
         top: Math.floor(Math.random() * 90)
       })
     },
+    switchShowComment() {
+      this.isShowComment = !this.isShowComment
+    },
     sendFreeMessage() {
       if (!this.freeComment || !this.freeComment.trim()) return
       this.socket.emit('ADD_COMMENT', {
@@ -119,7 +153,12 @@ export default {
 
 .iframe {
   width: 100%;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 200px);
+}
+
+.comment-area {
+  position: absolute;
+  bottom: 35px;
 }
 
 .bottomNav {
