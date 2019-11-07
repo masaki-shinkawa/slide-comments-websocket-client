@@ -27,7 +27,7 @@
               </article>
             </v-col>
           </v-flex>
-          <v-flex>
+          <v-flex xs12>
             <v-bottom-navigation
               v-model="bottomNav"
               dark
@@ -57,17 +57,12 @@
               </v-btn>
             </v-bottom-navigation>
           </v-flex>
-          <v-flex>
-            <v-bottom-navigation
-              v-model="bottomNav"
-              dark
-              height="90"
-              class="bottomNav"
-            >
-              <v-col cols="10">
-                <v-text-field
+          <v-flex xs12>
+            <v-bottom-navigation v-model="bottomNav" dark class="bottomNav">
+              <v-col cols="11">
+                <input
                   v-model="freeComment"
-                  label="LTで質問があれば入力してね！"
+                  placeholder="LTで質問があれば入力してね！"
                 />
               </v-col>
               <v-btn text icon x-small min-width="40" @click="sendFreeMessage">
@@ -153,7 +148,7 @@ export default {
 
 .iframe {
   width: 100%;
-  height: calc(100vh - 200px);
+  height: calc(100vh - 140px);
 }
 
 .comment-area {
