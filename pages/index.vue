@@ -62,6 +62,7 @@
               <v-col cols="11">
                 <input
                   v-model="freeComment"
+                  class="comment-input"
                   placeholder="LTで質問があれば入力してね！"
                 />
               </v-col>
@@ -154,6 +155,10 @@ export default {
 .comment-area {
   position: absolute;
   bottom: 35px;
+}
+
+.comment-input {
+  width: 100%;
 }
 
 .bottomNav {
