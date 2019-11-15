@@ -165,4 +165,8 @@ export default {
   overflow-x: scroll;
   justify-content: space-between;
 }
+div::-webkit-scrollbar {
+  /* Chrome, Safari 対応 */
+  display: none;
+}
 </style>
